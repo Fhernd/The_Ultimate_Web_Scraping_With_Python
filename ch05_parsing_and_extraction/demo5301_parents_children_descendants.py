@@ -11,7 +11,7 @@ def remove_non_navitable_strins(element):
 
     :return: list of NavigableString elements
     """
-    return list(filter(lambda x: isinstance(x, NavigableString), element.children))
+    return list(filter(lambda x: type(x) != NavigableString, element.children))
 
 
 url = 'https://books.toscrape.com'
@@ -22,6 +22,13 @@ content = response.text
 soup = BeautifulSoup(content, 'html.parser')
 
 children = list(soup.ul.children)
+
+for child in children:
+    print(child.name)
+
+print()
+
+children = remove_non_navitable_strins(soup.ul)
 
 for child in children:
     print(child.name)

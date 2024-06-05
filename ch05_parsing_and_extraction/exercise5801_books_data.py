@@ -28,7 +28,15 @@ pattern = r'\d+\.\d+'
 for b in books:
     book = {}
 
-    book['title'] = b.find('h3').find('a').get_text()
+    book_link = b.find('h3').find('a').attrs['href']
+    book_link = f'https://books.toscrape.com/{book_link}'
+    
+    response = requests.get(book_link)
+    content = response.text
+    book_page = BeautifulSoup(content, 'html.parser')
+    book_title = book_page.find('div', class_='product_main')
+    book_title = book_title.find('h1').get_text()
+    book['title'] = book_title
 
     rating = b.find('p', class_='star-rating')
     book['rating'] = stars[rating.attrs['class'][1]]

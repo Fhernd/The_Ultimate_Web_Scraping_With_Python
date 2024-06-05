@@ -1,3 +1,5 @@
+import re
+
 from bs4 import BeautifulSoup
 import requests
 
@@ -21,6 +23,8 @@ stars = {
     'Five': 5
 }
 
+pattern = r'\d+\.\d+'
+
 for b in books:
     book = {}
 
@@ -29,8 +33,10 @@ for b in books:
     rating = b.find('p', class_='star-rating')
     book['rating'] = stars[rating.attrs['class'][1]]
 
-    price = b.find('div', class_='price_color')
-    book['price'] = b.get_text()
+    price = b.find('p', class_='price_color')
+    price = price.get_text()
+    price = re.search(pattern, price)
+    book['price'] = float(price.group())
 
     data.append(book)
 

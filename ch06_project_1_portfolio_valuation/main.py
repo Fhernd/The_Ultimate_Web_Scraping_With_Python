@@ -1,5 +1,16 @@
+from dataclasses import dataclass
+
 from bs4 import BeautifulSoup
 import requests as r
+
+
+@dataclass
+class Stock:
+    ticker: str
+    exchange: str
+    price: float = 0
+    currency: str = "USD"
+    usd_price: float = 0
 
 
 def get_fx_to_usd(currency):

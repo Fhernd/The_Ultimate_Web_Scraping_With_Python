@@ -89,11 +89,17 @@ def get_price_information(ticker, exchange):
 
 
 def main():
-    stock = Stock("AAPL", "NASDAQ")
+    apple = Stock("AAPL", "NASDAQ")
+    msft = Stock("MSFT", "NASDAQ")
+    google = Stock("GOOGL", "NASDAQ")
 
-    position = Position(stock, 10)
+    portfolio = Portfolio([
+        Position(apple, 10),
+        Position(msft, 20),
+        Position(google, 5),
+    ])
 
-    print(position)
+    print(f"Total Portfolio Value: ${portfolio.get_total_value()}")
 
 
 if __name__ == "__main__":

@@ -12,6 +12,14 @@ class Stock:
     currency: str = "USD"
     usd_price: float = 0
 
+    def __post_init__(self):
+        price_info = get_price_information(self.ticker, self.exchange)
+
+        if price_info['ticker'] == self.ticker:
+            self.price = price_info['price']
+            self.currency = price_info['currency']
+            self.usd_price = price_info['usd_price']
+
 
 def get_fx_to_usd(currency):
     """

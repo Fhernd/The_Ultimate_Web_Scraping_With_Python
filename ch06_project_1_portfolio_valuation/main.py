@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
 import requests as r
+from tabulate import tabulate
 
 
 @dataclass

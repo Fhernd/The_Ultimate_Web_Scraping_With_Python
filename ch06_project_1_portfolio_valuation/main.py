@@ -89,6 +89,38 @@ def get_price_information(ticker, exchange):
     }
 
 
+def display_portfolio_summary(portfolio):
+    """
+    Display a summary of the portfolio.
+
+    Parameters:
+    portfolio (Portfolio): The portfolio to display.
+    """
+    if not isinstance(portfolio, Portfolio):
+        raise ValueError("The portfolio must be an instance of Portfolio.")
+    
+    portfolio_value = portfolio.get_total_value()
+
+    position_data = []
+    
+    for position in sorted(portfolio.positions, key=lambda x: x.quantity * x.stock.usd_price, reverse=True):
+        position_data.append([
+            position.stock.ticker,
+            position.stock.exchange,
+            position.quantity,
+            position.stock.usd_price,
+            position.stock.price,
+            position.quantity * position.stock.usd_price,
+            position.quantity * position.stock.usd_price / portfolio_value * 100,
+        ])
+
+    print(tabulate(position_data, headers=[
+        "Ticker", "Exchange", "Quantity", "USD Price", "Price", "Value", "% of Allocation"
+    ], tablefmt='psql', floatfmt=".2f"))
+
+    print("\nTotal Portfolio Value: ${:.2f}".format(portfolio_value))
+
+
 def main():
     apple = Stock("AAPL", "NASDAQ")
     msft = Stock("MSFT", "NASDAQ")
@@ -100,7 +132,7 @@ def main():
         Position(google, 5),
     ])
 
-    print(f"Total Portfolio Value: ${portfolio.get_total_value()}")
+    display_portfolio_summary(portfolio)
 
 
 if __name__ == "__main__":

@@ -2,6 +2,25 @@ from bs4 import BeautifulSoup
 import requests as r
 
 
+def get_fx_to_usd(currency):
+    """
+    Get the exchange rate of a currency to USD.
+
+    Parameters:
+    currency (str): The currency to convert to USD.
+
+    Returns:
+    float: The exchange rate of the currency to USD.
+    """
+    url = f"https://www.google.com/finance/quote/{currency}-USD"
+    response = r.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    fx_rate = soup.find("div", attrs={"data-last-price": True})
+
+    return float(fx_rate['data-last-price'])
+
+
 def get_price_information(ticker, exchange):
     """
     Get the price information of a stock from Yahoo Finance.
@@ -31,7 +50,9 @@ def get_price_information(ticker, exchange):
 
 def main():
     price = get_price_information("AAPL", "NASDAQ")
-    print(f"The price of AAPL is {price}")
+    
+    fx_rate = get_fx_to_usd('COP')
+    print('fx_rate:', fx_rate)
 
 
 if __name__ == "__main__":

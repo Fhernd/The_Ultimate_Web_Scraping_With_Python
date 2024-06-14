@@ -21,6 +21,12 @@ class Stock:
             self.usd_price = price_info['usd_price']
 
 
+@dataclass
+class Position:
+    stock: Stock
+    quantity: int
+
+
 def get_fx_to_usd(currency):
     """
     Get the exchange rate of a currency to USD.
@@ -74,9 +80,9 @@ def get_price_information(ticker, exchange):
 
 
 def main():
-    price = get_price_information("SHOP", "TSE")
-    
-    print(price)
+    stock = Stock("AAPL", "NASDAQ")
+
+    print(stock)
 
 
 if __name__ == "__main__":

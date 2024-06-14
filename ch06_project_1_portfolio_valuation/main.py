@@ -40,19 +40,24 @@ def get_price_information(ticker, exchange):
     price = float(price_div['data-last-price'])
     currency = price_div['data-currency-code']
 
+    usd_price = price
+    if currency != 'USD':
+        fx = get_fx_to_usd(currency)
+        usd_price = round(price * fx, 2)
+
     return {
         'ticker': ticker,
         'exchange': exchange,
         "price": price,
-        "currency": currency
+        "currency": currency,
+        'usd_price': usd_price,
     }
 
 
 def main():
-    price = get_price_information("AAPL", "NASDAQ")
+    price = get_price_information("SHOP", "TSE")
     
-    fx_rate = get_fx_to_usd('COP')
-    print('fx_rate:', fx_rate)
+    print(price)
 
 
 if __name__ == "__main__":

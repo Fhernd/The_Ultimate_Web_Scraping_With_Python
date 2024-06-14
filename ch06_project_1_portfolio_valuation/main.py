@@ -20,11 +20,20 @@ class Stock:
             self.currency = price_info['currency']
             self.usd_price = price_info['usd_price']
 
-
 @dataclass
 class Position:
     stock: Stock
     quantity: int
+
+@dataclass
+class Portfolio:
+    positions: list[Position]
+
+    def get_total_value(self):
+        total_value = 0
+        for position in self.positions:
+            total_value += position.stock.usd_price * position.quantity
+        return total_value
 
 
 def get_fx_to_usd(currency):
@@ -82,7 +91,9 @@ def get_price_information(ticker, exchange):
 def main():
     stock = Stock("AAPL", "NASDAQ")
 
-    print(stock)
+    position = Position(stock, 10)
+
+    print(position)
 
 
 if __name__ == "__main__":

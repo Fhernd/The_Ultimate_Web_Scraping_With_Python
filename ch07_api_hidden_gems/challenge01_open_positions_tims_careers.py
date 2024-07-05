@@ -11,6 +11,9 @@ class JobPosition:
     work_mode: str
     distance: float
     requirements: str
+    
+    def __str__(self):
+        return f'ID: {self.id}\nTitle: {self.title}\nWork Mode: {self.work_mode}\nDistance: {self.distance}\nRequirements: {self.requirements}\n'
 
 
 def extract_job_positions(results, lat, lng, postal_code) -> List[JobPosition]:
@@ -22,11 +25,12 @@ def extract_job_positions(results, lat, lng, postal_code) -> List[JobPosition]:
         response = requests.get(url)
         response.raise_for_status()
         
-        data = response.json()
+        data = response.json()['data']
         
         for job in data:
-            attributes = job['attributes']
             id = job['id']
+            
+            attributes = job['attributes']
             title = attributes['title']
             work_mode = 'Full-time' if attributes['full_time'] else 'Part-time' if attributes['part_time'] else 'Undefined'
             distance = attributes['distance']
@@ -54,7 +58,11 @@ def main():
     results = 10
     results = results // MAX_RESULTS_PER_PAGE + 1
     
-    extract_job_positions(results, lat, lng, postal_code)
+    job_positions = extract_job_positions(results, lat, lng, postal_code)
+    
+    for job_position in job_positions:
+        print(job_position)
+        print()
 
 
 if __name__ == '__main__':

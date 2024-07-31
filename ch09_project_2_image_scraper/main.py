@@ -32,3 +32,24 @@ def parse_html(html):
     """
     tree = HTMLParser(html)
     return tree
+
+
+def extract_images(tree):
+    """
+    Extracts the image URLs from the parsed HTML content of a page.
+    
+    Args:
+        tree (HTMLParser): The parsed HTML content of the page.
+    
+    Returns:
+        list: The image URLs extracted from the page.
+    """
+    return None
+
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+    main()

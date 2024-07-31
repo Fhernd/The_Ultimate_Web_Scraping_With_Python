@@ -44,7 +44,12 @@ def extract_images(tree):
     Returns:
         list: The image URLs extracted from the page.
     """
-    return None
+    container = tree.css_first('div#\\:ro\\:')
+    if container:
+        images = container.css('img.I7OuT.DVW3V.L1BOa')
+        return images
+    
+    return []
 
 
 def main():

@@ -47,11 +47,11 @@ def extract_images(tree):
         list: The image URLs extracted from the page.
     """
     # Find all image tags which have both the srcset and sizes attributes:
-    images = tree.css('img[loading="lazy"][sizes][srcset]')
+    images = tree.css('img.spacing_noMargin__F5u9R.MediaCard_image__yVXRE')
     return images
 
 def main():
-    url = 'https://unsplash.com/s/photos/Galaxy'
+    url = 'https://www.pexels.com/search/Galaxy/'
     try:
         html = fetch_page(url)
     except requests.exceptions.RequestException as e:
@@ -63,14 +63,7 @@ def main():
     images = extract_images(tree)
     
     print("Number of images found:", len(images))
-    for img in images:
-        src = img.attributes.get('src')
-        if src:
-            print(f"Image src: {src}")
-        for attr, value in img.attributes.items():
-            print(f"{attr}: {value}")
-        print("-" * 20)
-        time.sleep(1)  # Wait 1 second between processing each image
+
 
 if __name__ == "__main__":
     main()

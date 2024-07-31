@@ -18,3 +18,17 @@ def fetch_page(url):
     response.raise_for_status()
     
     return response.text
+
+
+def parse_html(html):
+    """
+    Parses the HTML content of a page.
+    
+    Args:
+        html (str): The HTML content of the page.
+    
+    Returns:
+        HTMLParser: The parsed HTML content of the page.
+    """
+    tree = HTMLParser(html)
+    return tree

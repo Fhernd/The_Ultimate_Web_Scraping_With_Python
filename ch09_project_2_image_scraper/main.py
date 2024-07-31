@@ -1,5 +1,5 @@
-import time
 import requests
+from httpx import get
 from selectolax.parser import HTMLParser
 
 def fetch_page(url):
@@ -12,15 +12,11 @@ def fetch_page(url):
     Returns:
         str: The HTML content of the page.
     """
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Connection': 'keep-alive'
-    }
-    session = requests.Session()
-    response = session.get(url, headers=headers)
-    response.raise_for_status()
+    response = get(url)
+    
+    if response.status_code != 200:
+        raise Exception(f"Failed to fetch the page: {response.status_code}")
+    
     return response.text
 
 def parse_html(html):
@@ -58,6 +54,7 @@ def main():
         print(f"Error fetching the page: {e}")
         return
 
+    print(html)
     tree = parse_html(html)
     
     images = extract_images(tree)

@@ -44,16 +44,20 @@ def extract_images(tree):
     Returns:
         list: The image URLs extracted from the page.
     """
-    container = tree.css_first('div#\\:ro\\:')
-    if container:
-        images = container.css('img.I7OuT.DVW3V.L1BOa')
-        return images
+    # Find all image tags which have both the srcset and sizes attributes:
+    images = tree.css('img[srcset][sizes]')
     
-    return []
+    return images
 
 
 def main():
-    pass
+    url = 'https://unsplash.com/s/photos/Galaxy'
+    html = fetch_page(url)
+    tree = parse_html(html)
+    
+    images = extract_images(tree)
+    
+    print(len(images))
 
 
 if __name__ == "__main__":

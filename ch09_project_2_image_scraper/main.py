@@ -1,6 +1,6 @@
+import time
 import requests
 from selectolax.parser import HTMLParser
-
 
 def fetch_page(url):
     """
@@ -13,12 +13,15 @@ def fetch_page(url):
         str: The HTML content of the page.
     """
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive'
     }
-    response = requests.get(url, headers=headers)
+    session = requests.Session()
+    response = session.get(url, headers=headers)
     response.raise_for_status()
     return response.text
-
 
 def parse_html(html):
     """
@@ -32,7 +35,6 @@ def parse_html(html):
     """
     tree = HTMLParser(html)
     return tree
-
 
 def extract_images(tree):
     """
@@ -49,7 +51,6 @@ def extract_images(tree):
     
     return images
 
-
 def main():
     url = 'https://unsplash.com/s/photos/Galaxy'
     html = fetch_page(url)
@@ -57,8 +58,13 @@ def main():
     
     images = extract_images(tree)
     
-    print(len(images))
-
+    print("Number of images found:", len(images))
+    for img in images:
+        print("Image src:", img.attributes.get('src'))
+        for attr, value in img.attributes.items():
+            print(f"{attr}: {value}")
+        print("-" * 20)
+        time.sleep(1)  # Wait 1 second between processing each image
 
 if __name__ == "__main__":
     main()

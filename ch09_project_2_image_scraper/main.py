@@ -12,11 +12,11 @@ def fetch_page(url):
     Returns:
         str: The HTML content of the page.
     """
-    
-    response = requests.get(url)
-
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
-    
     return response.text
 
 
@@ -45,7 +45,7 @@ def extract_images(tree):
         list: The image URLs extracted from the page.
     """
     # Find all image tags which have both the srcset and sizes attributes:
-    images = tree.css('img[srcset][sizes]')
+    images = tree.css('img[loading="lazy"][sizes][srcset]')
     
     return images
 

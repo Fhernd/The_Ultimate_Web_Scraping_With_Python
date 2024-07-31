@@ -48,19 +48,25 @@ def extract_images(tree):
     """
     # Find all image tags which have both the srcset and sizes attributes:
     images = tree.css('img[loading="lazy"][sizes][srcset]')
-    
     return images
 
 def main():
     url = 'https://unsplash.com/s/photos/Galaxy'
-    html = fetch_page(url)
+    try:
+        html = fetch_page(url)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching the page: {e}")
+        return
+
     tree = parse_html(html)
     
     images = extract_images(tree)
     
     print("Number of images found:", len(images))
     for img in images:
-        print("Image src:", img.attributes.get('src'))
+        src = img.attributes.get('src')
+        if src:
+            print(f"Image src: {src}")
         for attr, value in img.attributes.items():
             print(f"{attr}: {value}")
         print("-" * 20)

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 from httpx import get
 from selectolax.parser import HTMLParser
@@ -62,10 +64,10 @@ def download_image(url):
     
     filename = url.split('/')[-1]
     
-    with open(filename, 'wb') as file:
-        file.write(response.content)
+    date_time = datetime.now().strftime("%Y%m%d%H%M%S")
     
-    print(f"Downloaded: {filename}")
+    with open(f"images/{date_time}/{filename}", 'wb') as file:
+        file.write(response.content)
 
 
 def main():
@@ -86,6 +88,8 @@ def main():
     
     for image in images:
         download_image(image.attributes['src'])
+    
+    print("Images downloaded successfully.")
 
 
 if __name__ == "__main__":

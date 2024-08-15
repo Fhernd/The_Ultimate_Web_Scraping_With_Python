@@ -43,11 +43,11 @@ def extract_images(tree):
         list: The image URLs extracted from the page.
     """
     # Find all image tags which have both the srcset and sizes attributes:
-    images = tree.css('img.spacing_noMargin__F5u9R.MediaCard_image__yVXRE')
+    images = tree.css('img.post-image.entry-image')
     return images
 
 def main():
-    url = 'https://www.pexels.com/search/Galaxy/'
+    url = 'https://thegraphicsfairy.com/?s=computer'
     try:
         html = fetch_page(url)
     except requests.exceptions.RequestException as e:

@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 import requests
 from httpx import get
@@ -49,7 +50,7 @@ def extract_images(tree):
     return images
 
 
-def download_image(url):
+def download_image(url, current_dir):
     """
     Downloads an image from a URL.
     
@@ -64,9 +65,7 @@ def download_image(url):
     
     filename = url.split('/')[-1]
     
-    date_time = datetime.now().strftime("%Y%m%d%H%M%S")
-    
-    with open(f"images/{date_time}/{filename}", 'wb') as file:
+    with open(f"{current_dir}/{filename}", 'wb') as file:
         file.write(response.content)
 
 
@@ -85,9 +84,12 @@ def main():
     print("Number of images found:", len(images))
     
     print()
+    date_time = datetime.now().strftime("%Y%m%d%H%M%S")
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    os.makedirs(f"{current_dir}/images/{date_time}", exist_ok=True)
     
     for image in images:
-        download_image(image.attributes['src'])
+        download_image(image.attributes['src'], current_dir)
     
     print("Images downloaded successfully.")
 

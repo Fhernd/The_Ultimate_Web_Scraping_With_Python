@@ -46,6 +46,28 @@ def extract_images(tree):
     images = tree.css('img.post-image.entry-image')
     return images
 
+
+def download_image(url):
+    """
+    Downloads an image from a URL.
+    
+    Args:
+        url (str): The URL of the image to download.
+    """
+    response = get(url)
+    
+    if response.status_code != 200:
+        print(f"Failed to download the image: {response.status_code}")
+        return
+    
+    filename = url.split('/')[-1]
+    
+    with open(filename, 'wb') as file:
+        file.write(response.content)
+    
+    print(f"Downloaded: {filename}")
+
+
 def main():
     url = 'https://thegraphicsfairy.com/?s=computer'
     try:
@@ -54,12 +76,16 @@ def main():
         print(f"Error fetching the page: {e}")
         return
 
-    print(html)
     tree = parse_html(html)
     
     images = extract_images(tree)
     
     print("Number of images found:", len(images))
+    
+    print()
+    
+    for image in images:
+        download_image(image.attributes['src'])
 
 
 if __name__ == "__main__":

@@ -50,7 +50,7 @@ def extract_images(tree):
     return images
 
 
-def download_image(url, current_dir):
+def download_image(url, directory):
     """
     Downloads an image from a URL.
     
@@ -65,7 +65,7 @@ def download_image(url, current_dir):
     
     filename = url.split('/')[-1]
     
-    with open(f"{current_dir}/{filename}", 'wb') as file:
+    with open(f"{directory}/{filename}", 'wb') as file:
         file.write(response.content)
 
 
@@ -86,10 +86,11 @@ def main():
     print()
     date_time = datetime.now().strftime("%Y%m%d%H%M%S")
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    os.makedirs(f"{current_dir}/images/{date_time}", exist_ok=True)
+    directory = f"{current_dir}/images/{date_time}"
+    os.makedirs(directory, exist_ok=True)
     
     for image in images:
-        download_image(image.attributes['src'], current_dir)
+        download_image(image.attributes['src'], directory)
     
     print("Images downloaded successfully.")
 
